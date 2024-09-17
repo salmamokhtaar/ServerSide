@@ -3,13 +3,15 @@ const app = express()
 const cors = require('cors')
 const port = process.env.PORT || 5000;
 require('dotenv').config()
-
+const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
 
 const mongoose = require('mongoose');
 
 // middle ware
 app.use(express.json())
-app.use(cors()) 
+app.use(cors())
+app.use(bodyParser.json()); 
 // salmamuqtaarsiman
 // GBl3hMtRj0hTFcTZ
 // GBl3hMtRj0hTFcTZ
@@ -25,6 +27,76 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
+
+//send email
+// var nodemailer = require('nodemailer');
+
+// var transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: 'salmam.mohyadiin@gmail.com',
+//     pass: 'whbr prza iafx ktpp'
+//   }
+// });
+
+// var mailOptions = {
+//   from: 'salmam.mohyadiin@gmail.com',
+//   to: 'sususalax393hh@gmail.com',
+//   subject: 'Test Mail',
+//   text: 'You applied the job we will contact you thank you.'
+// };
+
+// transporter.sendMail(mailOptions, function(error, info){
+//   if (error) {
+//     console.log(error);
+//   } else {
+//     console.log('Email sent: ' + info.response);
+//   }
+// });
+
+
+//chat
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'salmam.mohyadiin@gmail.com', // your Gmail account
+    pass: 'whbr prza iafx ktpp', // app-specific password for security
+  },
+});
+
+app.post('/send-confirmation', (req, res) => {
+  const { email } = req.body;
+
+  const mailOptions = {
+    from: 'salmam.mohyadiin@gmail.com',
+    to: email,
+    subject: 'Job Application Confirmation',
+    text: 'Shaqadaad wa applied gareysay waan kula soo xidhiidhi doona insh allah',
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+      return res.status(500).send('Failed to send email');
+    }
+    console.log('Email sent: ' + info.response);
+    res.status(200).send('Email sent successfully');
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function run() {
   try {
@@ -266,12 +338,6 @@ app.post("/user/login", async (req, res) => {
       res.send(result)
       
     })
-   
-
-  
-  
-
-
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your Database. You successfully connected to MongoDB!");

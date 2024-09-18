@@ -58,7 +58,7 @@ const client = new MongoClient(uri, {
 //chat
 
 
-// back
+// back oo lo jawabayo
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -74,7 +74,7 @@ app.post('/send-confirmation', (req, res) => {
     from: 'salmam.mohyadiin@gmail.com',
     to: email,
     subject: 'Job Application Confirmation',
-    text: 'Shaqadaad wa applied gareysay waan kula soo xidhiidhi doona insh allah',
+    text: 'Shaqadaad wa applied gareysay waan kula soo xidhiidhi doona insh allah Nagala so xidhiid +252 617157083',
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
